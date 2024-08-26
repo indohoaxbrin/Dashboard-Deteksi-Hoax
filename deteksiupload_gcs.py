@@ -11,10 +11,14 @@ from datetime import datetime
 import pytz
 
 # Set environment variable for Google Cloud credentials
-with open("credentials.json", "w") as f:
-    f.write(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
+# Mengambil secret dari lingkungan
+google_credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+# Menyimpan ke file sementara untuk digunakan oleh Google API
+with open("google_credentials.json", "w") as f:
+    f.write(google_credentials)
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_credentials.json"
 
 def save_corrections_to_gcs(bucket_name, file_name, correction_data):
     client = storage.Client()
