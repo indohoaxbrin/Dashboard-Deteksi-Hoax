@@ -13,10 +13,8 @@ from io import StringIO
 import pytz
 
 # Set environment variable for Google Cloud credentials
-with open("credentials.json", "w") as f:
-    f.write(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+credentials_dict = st.secrets["GOOGLE_APPLICATION_CREDENTIALS"]
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_dict
 
 # # Mengambil secret dari lingkungan
 # google_credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
