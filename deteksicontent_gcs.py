@@ -13,14 +13,19 @@ from io import StringIO
 import pytz
 
 # Set environment variable for Google Cloud credentials
-# Mengambil secret dari lingkungan
-google_credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+with open("credentials.json", "w") as f:
+    f.write(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
 
-# Menyimpan ke file sementara untuk digunakan oleh Google API
-with open("google_credentials.json", "w") as f:
-    f.write(google_credentials)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_credentials.json"
+# # Mengambil secret dari lingkungan
+# google_credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+
+# # Menyimpan ke file sementara untuk digunakan oleh Google API
+# with open("google_credentials.json", "w") as f:
+#     f.write(google_credentials)
+
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_credentials.json"
 
 def save_corrections_to_gcs(bucket_name, file_name, correction_data):
     client = storage.Client()  # Uses the credentials set by the environment variable
