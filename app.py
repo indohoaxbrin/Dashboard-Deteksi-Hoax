@@ -1,5 +1,9 @@
 import streamlit as st
 
+
+# Print all available secrets to check if GOOGLE_APPLICATION_CREDENTIALS_JSON is there
+st.write(st.secrets.keys())
+
 # Set page configuration
 st.set_page_config(page_title="Hoax Detection Dashboard", layout="wide")
 st.title("Dashboard Deteksi Berita Hoax")
