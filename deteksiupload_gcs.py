@@ -10,18 +10,16 @@ import os
 from datetime import datetime
 import pytz
 
+# Ambil kredensial JSON dari secrets Streamlit
+credentials_json = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
+
+# Simpan kredensial JSON ke file sementara
+with open("/tmp/credentials.json", "w") as f:
+    f.write(credentials_json)
+
 # Set environment variable for Google Cloud credentials
-credentials_dict = st.secrets["GOOGLE_APPLICATION_CREDENTIALS"]
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_dict
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/tmp/credentials.json"
 
-# Mengambil secret dari lingkungan
-# google_credentials = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-
-# # Menyimpan ke file sementara untuk digunakan oleh Google API
-# with open("google_credentials.json", "w") as f:
-#     f.write(google_credentials)
-
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "google_credentials.json"
 
 def save_corrections_to_gcs(bucket_name, file_name, correction_data):
     client = storage.Client()
