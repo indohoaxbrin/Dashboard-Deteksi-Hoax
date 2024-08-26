@@ -11,7 +11,10 @@ from datetime import datetime
 import pytz
 
 # Set environment variable for Google Cloud credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/DashboardHoax/inbound-source-431806-g7-e49e388ce0be.json"
+with open("credentials.json", "w") as f:
+    f.write(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
 def save_corrections_to_gcs(bucket_name, file_name, correction_data):
     client = storage.Client()
