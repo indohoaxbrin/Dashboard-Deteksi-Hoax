@@ -12,15 +12,33 @@ import os
 from io import StringIO
 import pytz
 
-# Ambil kredensial JSON dari secrets Streamlit
-credentials_json = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
+# # Ambil kredensial JSON dari secrets Streamlit
+# credentials_json = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
 
-# Simpan kredensial JSON ke file sementara
-with open("/tmp/credentials.json", "w") as f:
-    f.write(credentials_json)
+# # Simpan kredensial JSON ke file sementara
+# with open("/tmp/credentials.json", "w") as f:
+#     f.write(credentials_json)
 
-# Set environment variable for Google Cloud credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/tmp/credentials.json"
+# # Set environment variable for Google Cloud credentials
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/tmp/credentials.json"
+
+def download_json_from_gcs(bucket_name, source_blob_name, destination_file_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_blob_name)
+    blob.download_to_filename(destination_file_name)
+    print(f"Downloaded storage object {source_blob_name} from bucket {bucket_name} to local file {destination_file_name}.")
+
+# Konfigurasi
+bucket_name = 'dashboardhoax-bucket'
+source_blob_name = 'dashboardhoax-bucket/inbound-source-431806-g7-e49e388ce0be.json'
+destination_file_name = '/tmp/json-file.json'
+
+# Unduh file JSON dari GCS
+download_json_from_gcs(bucket_name, source_blob_name, destination_file_name)
+
+# Gunakan file JSON yang diunduh
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = destination_file_name
 
 def save_corrections_to_gcs(bucket_name, file_name, correction_data):
     client = storage.Client()  # Uses the credentials set by the environment variable
